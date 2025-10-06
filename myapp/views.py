@@ -1,8 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
-# Create your views here.
 
 
-def login (request):
-    return HttpResponse("Hola login ")
+def signip (request):
+    return render(request, 'signip.html')
+
+def signup (request):
+    return render(request, 'signup.html')
+
+def create (request):
+    return HttpResponse("Hola create")
+
+
+
