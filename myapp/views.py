@@ -1,4 +1,5 @@
 from django.shortcuts import render
+    
 
 
 def signip (request):
@@ -7,8 +8,9 @@ def signip (request):
 def signup (request):
     return render(request, 'signup.html')
 
-def create (request):
-    return HttpResponse("Hola create")
+def home (request):
+    return render(request, 'home.html')
+
 
 
 

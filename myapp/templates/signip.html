@@ -1,2 +1,26 @@
-<h1>Hola desde signip</h1>
-<h1>INICIAR SESION</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesion</title>
+</head>
+<body>
+    
+    <div>
+  <h1>Iniciar sesion</h1>
+
+  <form action="/Correo" method="POST">
+    <label for="username">Correo Electronico</label><br>
+    <input type="text" id="email" name="email" required><br><br>
+
+    <label for="password">Contraseña:</label><br>
+    <input type="password" id="password" name="password" required><br><br>
+    <p>¿No tienes cuenta? 
+        <a href="{% url 'Register' %}">Crear una cuenta </a> 
+    </p>
+    <button type="submit" >Iniciar Sesion</button>
+    </div>
+  </form>
+</body>
+</html>
