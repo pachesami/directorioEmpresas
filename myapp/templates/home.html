@@ -10,7 +10,20 @@
     </button>
   </div>
 
-  <!-- Modal -->
+  <!-- Buscador -->
+  <form class="d-flex mb-2" role="search" method="get" action="{% url 'home' %}">
+    <input class="w-25 form-control me-2" type="search" placeholder="Buscar (compañía, cliente, código...)" name="q" value="{{ q|default:'' }}">
+    <button class="btn btn-outline-primary" type="submit">Buscar</button>
+    {% if q %}
+      <a class="btn btn-link ms-2" href="{% url 'home' %}">Limpiar</a>
+    {% endif %}
+  </form>
+
+  {% if q %}
+    <p class="text-muted small">Resultados para <strong>{{ q }}</strong>: {{ empresas|length }}</p>
+  {% endif %}
+
+  <!--Modal para registro de empresa -->
   <div class="modal fade" id="empresaModal" tabindex="-1" aria-labelledby="empresaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -44,7 +57,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Logo</label>
-              <input type="file" name="logo" class="form-control" required>
+              <input type="file" name="logo" class="form-control">
             </div>
           </div>
 
@@ -56,36 +69,37 @@
       </div>
     </div>
   </div>
-  <div class="row mt-4">
-  {% for e in empresas %}
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow-sm border-0">
-        {% if e.logo %}
-          <img src="{{ e.logo.url }}" class="card-img-top" alt="logo {{ e.compania }}"
-               style="height:180px; object-fit:contain;">
-        {% else %}
-          <div class="text-center py-5 text-muted bg-light">Sin logo</div>
-        {% endif %}
 
-        <div class="card-body">
-          <h5 class="card-title mb-1">{{ e.compania }}</h5>
-          <div class="text-muted small mb-2">Código: {{ e.codigo }}</div>
-          <ul class="list-unstyled small mb-0">
-            <li><strong>Cliente:</strong> {{ e.cliente }}</li>
-            <li><strong>Tel:</strong> {{ e.telefono }}</li>
-            <li><strong>Correo:</strong> {{ e.correo }}</li>
-            <li><strong>País:</strong> {{ e.pais }}</li>
-          </ul>
-        </div>
+  <!-- Grid de cards (3 columnas) -->
+  <div class="row mt-4 border-top pt-4">
+    {% for e in empresas %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          {% if e.logo %}
+            <img src="{{ e.logo.url }}" class="card-img-top" alt="logo {{ e.compania }}"
+                 style="height:180px; object-fit:contain;">
+          {% else %}
+            <div class="text-center py-5 text-muted bg-light">Sin logo</div>
+          {% endif %}
 
-        <div class="card-footer small text-muted">
-          Registrada: {{ e.fecha_creacion|date:"d/m/Y H:i" }}
+          <div class="card-body">
+            <h5 class="card-title mb-1">{{ e.compania }}</h5>
+            <div class="text-muted small mb-2">Código: {{ e.codigo }}</div>
+            <ul class="list-unstyled small mb-0">
+              <li><strong>Cliente:</strong> {{ e.cliente }}</li>
+              <li><strong>Tel:</strong> {{ e.telefono }}</li>
+              <li><strong>Correo:</strong> {{ e.correo }}</li>
+              <li><strong>País:</strong> {{ e.pais }}</li>
+            </ul>
+          </div>
+
+          <div class="card-footer small text-muted">
+            Registrada: {{ e.fecha_creacion|date:"d/m/Y H:i" }}
+          </div>
         </div>
       </div>
-    </div>
-  {% empty %}
-    <p class="text-muted">Aún no hay empresas registradas.</p>
-  {% endfor %}
-</div>
-
+    {% empty %}
+      <p class="text-muted">Aún no hay empresas registradas.</p>
+    {% endfor %}
+  </div>
 {% endblock %}

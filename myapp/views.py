@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from .models import Empresa
+from django.db.models import Q
 
 
 def signip (request):
@@ -23,10 +24,25 @@ def home (request):
         messages.success(request, 'Empresa registrada exitosamente')
         return redirect('home')
     
-    empresas = Empresa.objects.all().order_by('id')
-    return render(request, 'home.html', {'empresas': empresas})
+    q = request.GET.get('q', '').strip()
 
+    empresas = Empresa.objects.all()
+    if q:
+        empresas = empresas.filter(
+            Q(compania__icontains=q) |
+            Q(cliente__icontains=q)  |
+            Q(codigo__icontains=q)   |
+            Q(correo__icontains=q)   |
+            Q(pais__icontains=q)     |
+            Q(telefono__icontains=q)
+        )
 
+    empresas = empresas.order_by('id')  
+
+    return render(request, 'home.html', {
+        'empresas': empresas,
+        'q': q,  
+    })
 
 
 
