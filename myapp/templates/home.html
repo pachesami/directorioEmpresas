@@ -1,1 +1,59 @@
-<h1>Hola</h1>
+{% extends "base.html" %}
+
+{% block title %}Home · Empresas{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">Directorio de Empresas</h1>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#empresaModal">
+      Agregar Empresa
+    </button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="empresaModal" tabindex="-1" aria-labelledby="empresaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h5 class="modal-title" id="empresaModalLabel">Registrar Empresa</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Cliente</label>
+              <input type="text" name="cliente" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Compañía</label>
+              <input type="text" name="compania" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Teléfono</label>
+              <input type="text" name="telefono" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Correo</label>
+              <input type="email" name="correo" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">País</label>
+              <input type="text" name="pais" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Logo</label>
+              <input type="file" name="logo" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
