@@ -22,7 +22,10 @@ def home (request):
         
         messages.success(request, 'Empresa registrada exitosamente')
         return redirect('home')
-    return render(request, 'home.html')
+    
+    empresas = Empresa.objects.all().order_by('id')
+    return render(request, 'home.html', {'empresas': empresas})
+
 
 
 

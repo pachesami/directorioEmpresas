@@ -56,4 +56,36 @@
       </div>
     </div>
   </div>
+  <div class="row mt-4">
+  {% for e in empresas %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        {% if e.logo %}
+          <img src="{{ e.logo.url }}" class="card-img-top" alt="logo {{ e.compania }}"
+               style="height:180px; object-fit:contain;">
+        {% else %}
+          <div class="text-center py-5 text-muted bg-light">Sin logo</div>
+        {% endif %}
+
+        <div class="card-body">
+          <h5 class="card-title mb-1">{{ e.compania }}</h5>
+          <div class="text-muted small mb-2">Código: {{ e.codigo }}</div>
+          <ul class="list-unstyled small mb-0">
+            <li><strong>Cliente:</strong> {{ e.cliente }}</li>
+            <li><strong>Tel:</strong> {{ e.telefono }}</li>
+            <li><strong>Correo:</strong> {{ e.correo }}</li>
+            <li><strong>País:</strong> {{ e.pais }}</li>
+          </ul>
+        </div>
+
+        <div class="card-footer small text-muted">
+          Registrada: {{ e.fecha_creacion|date:"d/m/Y H:i" }}
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">Aún no hay empresas registradas.</p>
+  {% endfor %}
+</div>
+
 {% endblock %}
