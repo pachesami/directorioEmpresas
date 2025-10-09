@@ -16,7 +16,6 @@ class Empresa(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)  
     fecha_actualizacion = models.DateTimeField(auto_now=True) 
 
-    # Generar código único al guardar por primera vez
     def save(self, *args, **kwargs):
         creando = self.pk is None
         super().save(*args, **kwargs)
@@ -26,6 +25,7 @@ class Empresa(models.Model):
     # 
     def __str__(self):
         return f"{self.cliente}  ({self.codigo})"
+
 
 
 

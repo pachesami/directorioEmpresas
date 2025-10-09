@@ -3,67 +3,74 @@
 {% block title %}Home · Empresas{% endblock %}
 
 {% block content %}
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h4 mb-0">Directorio de Empresas</h1>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#empresaModal">
-      Agregar Empresa
-    </button>
+  <div style="background:#18181b; border-radius:1.5rem; padding:1.5rem 2rem; margin-bottom:2rem; box-shadow:0 2px 24px #FFD70022;">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="h4 mb-0" style="color:#FFD700; font-size:2rem; letter-spacing:1px; text-shadow:0 0 10px #FFD70033;">Directorio de Empresas</h1>
+      <div class="d-flex gap-2">
+        {% if request.user.is_authenticated and perms.myapp.add_empresa %}
+          <button type="button" class="btn btn-primary" style="background:linear-gradient(90deg,#FFD700,#B8860B); color:#18181b; font-weight:bold; border:none; border-radius:1rem; padding:0.5rem 1.5rem;" data-bs-toggle="modal" data-bs-target="#empresaModal">
+            Agregar Empresa
+          </button>
+        {% endif %}
+        <a href="{% url 'logout' %}" class="btn btn-danger" style="background:#222; color:#FFD700; border:none; border-radius:1rem; font-weight:bold; padding:0.5rem 1.5rem;">
+          Cerrar sesión
+        </a>
+      </div>
+    </div>
   </div>
 
   <!-- Buscador -->
-  <form class="d-flex mb-2" role="search" method="get" action="{% url 'home' %}">
-    <input class="w-25 form-control me-2" type="search" placeholder="Buscar (compañía, cliente, código...)" name="q" value="{{ q|default:'' }}">
-    <button class="btn btn-outline-primary" type="submit">Buscar</button>
+  <form class="d-flex mb-4" role="search" method="get" action="{% url 'home' %}" style="background:#18181b; border-radius:1rem; padding:1rem; box-shadow:0 2px 24px #FFD70011;">
+    <input class="w-25 form-control me-2" style="background:#222; color:#FFD700; border:1px solid #FFD70033; border-radius:0.75rem; font-size:1rem;" type="search" placeholder="Buscar (compañía, cliente, código...)" name="q" value="{{ q|default:'' }}">
+    <button class="btn btn-outline-primary" style="background:linear-gradient(90deg,#FFD700,#B8860B); color:#18181b; font-weight:bold; border:none; border-radius:0.75rem; padding:0.5rem 1.5rem;" type="submit">Buscar</button>
     {% if q %}
-      <a class="btn btn-link ms-2" href="{% url 'home' %}">Limpiar</a>
+      <a class="btn btn-link ms-2" style="color:#FFD700; font-weight:bold;" href="{% url 'home' %}">Limpiar</a>
     {% endif %}
   </form>
 
   {% if q %}
-    <p class="text-muted small">Resultados para <strong>{{ q }}</strong>: {{ empresas|length }}</p>
+    <p class="text-muted small" style="color:#FFD70099;">Resultados para <strong style="color:#FFD700;">{{ q }}</strong>: {{ empresas|length }}</p>
   {% endif %}
 
   <!--Modal para registro de empresa -->
   <div class="modal fade" id="empresaModal" tabindex="-1" aria-labelledby="empresaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="background:#18181b; color:#fff; border:1px solid #FFD70033; border-radius:1.5rem;">
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
-          <div class="modal-header">
-            <h5 class="modal-title" id="empresaModalLabel">Registrar Empresa</h5>
+          <div class="modal-header" style="border-bottom:1px solid #FFD70033;">
+            <h5 class="modal-title" id="empresaModalLabel" style="color:#FFD700;">Registrar Empresa</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
-
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label">Cliente</label>
-              <input type="text" name="cliente" class="form-control" required>
+              <label class="form-label" style="color:#FFD700;">Cliente</label>
+              <input type="text" name="cliente" class="form-control" style="background:#222; color:#FFD700; border:1px solid #FFD70033; border-radius:0.75rem;" required>
             </div>
             <div class="mb-3">
-              <label class="form-label">Compañía</label>
-              <input type="text" name="compania" class="form-control" required>
+              <label class="form-label" style="color:#FFD700;">Compañía</label>
+              <input type="text" name="compania" class="form-control" style="background:#222; color:#FFD700; border:1px solid #FFD70033; border-radius:0.75rem;" required>
             </div>
             <div class="mb-3">
-              <label class="form-label">Teléfono</label>
-              <input type="text" name="telefono" class="form-control" required>
+              <label class="form-label" style="color:#FFD700;">Teléfono</label>
+              <input type="text" name="telefono" class="form-control" style="background:#222; color:#FFD700; border:1px solid #FFD70033; border-radius:0.75rem;" required>
             </div>
             <div class="mb-3">
-              <label class="form-label">Correo</label>
-              <input type="email" name="correo" class="form-control" required>
+              <label class="form-label" style="color:#FFD700;">Correo</label>
+              <input type="email" name="correo" class="form-control" style="background:#222; color:#FFD700; border:1px solid #FFD70033; border-radius:0.75rem;" required>
             </div>
             <div class="mb-3">
-              <label class="form-label">País</label>
-              <input type="text" name="pais" class="form-control" required>
+              <label class="form-label" style="color:#FFD700;">País</label>
+              <input type="text" name="pais" class="form-control" style="background:#222; color:#FFD700; border:1px solid #FFD70033; border-radius:0.75rem;" required>
             </div>
             <div class="mb-3">
-              <label class="form-label">Logo</label>
-              <input type="file" name="logo" class="form-control">
+              <label class="form-label" style="color:#FFD700;">Logo</label>
+              <input type="file" name="logo" class="form-control" style="background:#222; color:#FFD700; border:1px solid #FFD70033; border-radius:0.75rem;">
             </div>
           </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+          <div class="modal-footer" style="border-top:1px solid #FFD70033;">
+            <button type="button" class="btn btn-secondary" style="background:#222; color:#FFD700; border:none; border-radius:0.75rem; font-weight:bold;" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary" style="background:linear-gradient(90deg,#FFD700,#B8860B); color:#18181b; border:none; border-radius:0.75rem; font-weight:bold;">Guardar</button>
           </div>
         </form>
       </div>
@@ -71,35 +78,36 @@
   </div>
 
   <!-- Grid de cards (3 columnas) -->
-  <div class="row mt-4 border-top pt-4">
+  <div class="row mt-4 border-top pt-4" style="background:#18181b; border-radius:1.5rem; padding:2rem 1rem; box-shadow:0 2px 24px #FFD70011;">
     {% for e in empresas %}
       <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card h-100 shadow-sm border-0" style="background:#23232b; color:#FFD700; border-radius:1.25rem; box-shadow:0 4px 24px #FFD70022; border:2px solid #FFD70055; position:relative;">
+          <div style="position:absolute; top:-2px; left:-2px; right:-2px; height:8px; border-radius:1.25rem 1.25rem 0 0; background:linear-gradient(90deg,#FFD700,#B8860B); opacity:0.7;"></div>
           {% if e.logo %}
             <img src="{{ e.logo.url }}" class="card-img-top" alt="logo {{ e.compania }}"
-                 style="height:180px; object-fit:contain;">
+                 style="height:180px; object-fit:contain; background:#18181b; border-bottom:2px solid #FFD70033; border-radius:1.25rem 1.25rem 0 0;">
           {% else %}
-            <div class="text-center py-5 text-muted bg-light">Sin logo</div>
+            <div class="text-center py-5 text-muted bg-dark" style="border-bottom:2px solid #FFD70033; border-radius:1.25rem 1.25rem 0 0;">Sin logo</div>
           {% endif %}
 
-          <div class="card-body">
-            <h5 class="card-title mb-1">{{ e.compania }}</h5>
-            <div class="text-muted small mb-2">Código: {{ e.codigo }}</div>
+          <div class="card-body" style="padding:1.25rem;">
+            <h5 class="card-title mb-1" style="color:#FFD700; font-size:1.25rem;">{{ e.compania }}</h5>
+            <div class="small mb-2" style="color:#FFD70099;">Código: {{ e.codigo }}</div>
             <ul class="list-unstyled small mb-0">
-              <li><strong>Cliente:</strong> {{ e.cliente }}</li>
-              <li><strong>Tel:</strong> {{ e.telefono }}</li>
-              <li><strong>Correo:</strong> {{ e.correo }}</li>
-              <li><strong>País:</strong> {{ e.pais }}</li>
+              <li><strong style="color:#FFD700;">Cliente:</strong> <span style="color:#fff;">{{ e.cliente }}</span></li>
+              <li><strong style="color:#FFD700;">Tel:</strong> <span style="color:#fff;">{{ e.telefono }}</span></li>
+              <li><strong style="color:#FFD700;">Correo:</strong> <span style="color:#fff;">{{ e.correo }}</span></li>
+              <li><strong style="color:#FFD700;">País:</strong> <span style="color:#fff;">{{ e.pais }}</span></li>
             </ul>
           </div>
 
-          <div class="card-footer small text-muted">
+          <div class="card-footer small" style="background:#18181b; color:#FFD70099; border-top:1px solid #FFD70022; border-radius:0 0 1.25rem 1.25rem;">
             Registrada: {{ e.fecha_creacion|date:"d/m/Y H:i" }}
           </div>
         </div>
       </div>
     {% empty %}
-      <p class="text-muted">Aún no hay empresas registradas.</p>
+      <p class="text-muted" style="color:#FFD70099;">Aún no hay empresas registradas.</p>
     {% endfor %}
   </div>
 {% endblock %}
