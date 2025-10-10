@@ -1,13 +1,13 @@
 # myapp/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db import transaction, IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-
-from .models import Empresa               # <-- Quita ", Usuario"
-from .forms import DjangoUserSignupForm   # <-- usa el form basado en auth.User
+from django.core.paginator import Paginator
+from .models import Empresa
+from .forms import DjangoUserSignupForm
 
 def signip(request):
     if request.user.is_authenticated:
@@ -33,10 +33,9 @@ def signup(request):
                     messages.success(request, 'Usuario registrado exitosamente. Ahora puedes iniciar sesión.')
                     return redirect('login')
             except IntegrityError as e:
-                print(f"Error de integridad: {e}")  # Para debugging
+                print(f"Error de integridad: {e}")
                 messages.error(request, 'Error al guardar el usuario.')
         else:
-            # Imprimir errores para debugging
             print(f"Errores del formulario: {form.errors}")
             for field, errors in form.errors.items():
                 for error in errors:
@@ -46,8 +45,9 @@ def signup(request):
     
     return render(request, 'signup.html', {'form': form})
 
-@login_required(login_url='login')  # o 'Login'
+@login_required(login_url='login')
 def home(request):
+    # Crear empresa
     if request.method == 'POST':
         if not request.user.has_perm('myapp.add_empresa'):
             messages.error(request, 'No tienes permiso para agregar empresas.')
@@ -62,18 +62,77 @@ def home(request):
         )
         messages.success(request, 'Empresa registrada exitosamente')
         return redirect('home')
-
+    
+    # Buscar empresas
     q = request.GET.get('q', '').strip()
-    empresas = Empresa.objects.all()
+    empresas_qs = Empresa.objects.all()
+    
     if q:
-        empresas = empresas.filter(
+        empresas_qs = empresas_qs.filter(
             Q(compania__icontains=q) | Q(cliente__icontains=q) | Q(codigo__icontains=q) |
             Q(correo__icontains=q)   | Q(pais__icontains=q)    | Q(telefono__icontains=q)
         )
-    empresas = empresas.order_by('id')
-    return render(request, 'home.html', {'empresas': empresas, 'q': q})
+    
+    empresas_qs = empresas_qs.order_by('id')
+    
+    # Paginación
+    paginator = Paginator(empresas_qs, 12)
+    page = request.GET.get('page')
+    empresas = paginator.get_page(page)
+    
+    # Determinar si es administrador
+    is_admin = request.user.is_staff or request.user.has_perm('myapp.change_empresa')
+
+    return render(request, 'home.html', {
+        'empresas': empresas,
+        'q': q,
+        'is_admin': is_admin
+    })
+
+@login_required(login_url='login')
+def editar_empresa(request, id):
+    if not request.user.has_perm('myapp.change_empresa'):
+        messages.error(request, 'No tienes permiso para editar empresas.')
+        return redirect('home')
+    
+    empresa = get_object_or_404(Empresa, id=id)
+    
+    if request.method == 'POST':
+        empresa.cliente = request.POST.get('cliente', empresa.cliente)
+        empresa.compania = request.POST.get('compania', empresa.compania)
+        empresa.telefono = request.POST.get('telefono', empresa.telefono)
+        empresa.correo = request.POST.get('correo', empresa.correo)
+        empresa.pais = request.POST.get('pais', empresa.pais)
+        
+        if request.FILES.get('logo'):
+            empresa.logo = request.FILES.get('logo')
+        
+        empresa.save()
+        messages.success(request, f'Empresa "{empresa.compania}" actualizada exitosamente.')
+        return redirect('home')
+    
+    return redirect('home')
+
+@login_required(login_url='login')
+def eliminar_empresa(request, id):
+    if not request.user.has_perm('myapp.delete_empresa'):
+        messages.error(request, 'No tienes permiso para eliminar empresas.')
+        return redirect('home')
+    
+    empresa = get_object_or_404(Empresa, id=id)
+    
+    if request.method == 'POST':
+        confirmacion = request.POST.get('confirmacion', '').strip()
+        if confirmacion.lower() == 'eliminar':
+            nombre_empresa = empresa.compania
+            empresa.delete()
+            messages.success(request, f'Empresa "{nombre_empresa}" eliminada exitosamente.')
+        else:
+            messages.error(request, 'Debes escribir "eliminar" para confirmar la acción.')
+    
+    return redirect('home')
 
 def logout_view(request):
     logout(request)
     messages.info(request, 'Has cerrado sesión correctamente.')
-    return redirect('login')  # o 'Login'
+    return redirect('login')

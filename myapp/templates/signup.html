@@ -8,7 +8,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-  
+    <style>
+      .text-glow {
+        animation: textGlow 2.5s ease-in-out infinite;
+      }
+      @keyframes textGlow {
+        0%,
+        100% {
+          text-shadow: 0 0 18px #ffd70055;
+        }
+        50% {
+          text-shadow: 0 0 36px #ffd70099, 0 0 60px #ffd70044;
+        }
+      }
+      .card-fade {
+        animation: cardFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+      }
+      @keyframes cardFadeIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.95) translateY(40px);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      .btn-press:active {
+        transform: scale(0.97);
+        box-shadow: 0 0 0 0 #ffd700;
+      }
+      .input-focus:focus {
+        box-shadow: 0 0 0 2px #ffd70044;
+      }
+    </style>
   </head>
   <body
     class="min-h-screen bg-neutral-950 flex items-center justify-center p-4 relative overflow-hidden"
@@ -30,14 +63,14 @@
           class="mb-10 text-center md:text-left relative max-w-lg mx-auto md:mx-0"
         >
           <div class="relative inline-block w-full">
-            <!-- Líneas laterales -->
+            <!-- Líneas laterales animadas -->
             <div
-              class="hidden md:block absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-24 h-px bg-gradient-to-r from-transparent to-amber-400"
+              class="hidden md:block absolute left-0 top-1/2 -translate-x-full -translate-y-1/2 w-24 h-px bg-gradient-to-r from-transparent to-amber-400 animate-pulse"
             ></div>
             <div
-              class="hidden md:block absolute right-0 top-1/2 translate-x-full -translate-y-1/2 w-24 h-px bg-gradient-to-l from-transparent to-amber-400"
+              class="hidden md:block absolute right-0 top-1/2 translate-x-full -translate-y-1/2 w-24 h-px bg-gradient-to-l from-transparent to-amber-400 animate-pulse"
             ></div>
-            <!-- Icono central (centrado respecto al texto) -->
+            <!-- Icono central con glow animado -->
             <div class="flex justify-center mb-6">
               <div class="relative mx-auto">
                 <div
@@ -58,7 +91,7 @@
                 </div>
               </div>
             </div>
-            <!-- Texto del slogan -->
+            <!-- Texto del slogan con glow -->
             <h1
               class="text-glow text-4xl md:text-6xl font-black bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent mb-2 tracking-tight"
             >
@@ -69,9 +102,9 @@
             >
               LATINOS
             </h1>
-            <!-- Subtítulo -->
+            <!-- Subtítulo con animación -->
             <div
-              class="mt-6 inline-block px-6 py-2 bg-amber-500/10 border border-amber-500/30 rounded-full"
+              class="mt-6 inline-block px-6 py-2 bg-amber-500/10 border border-amber-500/30 rounded-full animate-pulse"
             >
               <p
                 class="text-amber-400 text-sm font-bold tracking-[0.3em] uppercase"
@@ -86,7 +119,7 @@
       <!-- Card de registro (derecha) -->
       <div class="w-full md:w-1/2 flex items-center justify-center">
         <div
-          class="bg-neutral-900/70 backdrop-blur-xl border border-amber-500/20 rounded-3xl shadow-2xl shadow-amber-500/10 overflow-hidden w-full max-w-md mx-auto"
+          class="card-fade bg-neutral-900/70 backdrop-blur-xl border border-amber-500/20 rounded-3xl shadow-2xl shadow-amber-500/10 overflow-hidden w-full max-w-md mx-auto transition-all duration-300 hover:shadow-amber-500/30"
         >
           <!-- Header -->
           <div class="p-8 pb-6 border-b border-neutral-800/50">
@@ -105,7 +138,7 @@
             <ul class="space-y-2">
               {% for message in messages %}
               <li
-                class="bg-amber-500/10 border border-amber-500/30 text-amber-400 px-4 py-3 rounded-xl text-sm"
+                class="bg-amber-500/10 border border-amber-500/30 text-amber-400 px-4 py-3 rounded-xl text-sm animate-pulse"
               >
                 {{ message }}
               </li>
@@ -126,7 +159,7 @@
                 </label>
                 <input
                   type="text"
-                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
+                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none input-focus focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
                   id="username"
                   name="username"
                   required
@@ -142,7 +175,7 @@
                 </label>
                 <input
                   type="email"
-                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
+                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none input-focus focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
                   id="email"
                   name="email"
                   required
@@ -158,7 +191,7 @@
                 </label>
                 <input
                   type="password"
-                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
+                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none input-focus focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
                   id="password"
                   name="password"
                   required
@@ -174,7 +207,7 @@
                 </label>
                 <input
                   type="password"
-                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
+                  class="w-full bg-neutral-800/50 border border-neutral-700 rounded-2xl px-4 py-3 md:py-4 text-white placeholder-neutral-500 focus:outline-none input-focus focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition-all"
                   id="confirm_password"
                   name="confirm_password"
                   required
@@ -183,7 +216,7 @@
               </div>
               <button
                 type="submit"
-                class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold py-3 md:py-4 rounded-2xl transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-lg shadow-amber-500/30 mt-6"
+                class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold py-3 md:py-4 rounded-2xl transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-lg shadow-amber-500/30 mt-6 btn-press"
               >
                 Registrarse
               </button>
@@ -194,7 +227,7 @@
                 ¿Ya tienes cuenta?
                 <a
                   href="{% url 'login' %}"
-                  class="text-amber-400 hover:text-amber-300 transition-colors font-medium"
+                  class="text-amber-400 hover:text-amber-300 transition-colors font-medium underline underline-offset-2"
                 >
                   Inicia sesión
                 </a>
