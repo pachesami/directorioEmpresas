@@ -1,0 +1,15 @@
+Package               Version
+--------------------- -------
+asgiref               3.10.0
+Django                5.2.7
+django-bootstrap5     25.2
+django-browser-reload 1.21.0
+django-tailwind       4.2.0
+et_xmlfile            2.0.0
+openpyxl              3.1.5
+pillow                11.3.0
+pip                   25.2
+setuptools            80.9.0
+sqlparse              0.5.3
+tzdata                2025.2
+wheel                 0.45.1

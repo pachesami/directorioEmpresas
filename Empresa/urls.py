@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from myapp import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,14 +24,12 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.signip, name='login'),
-    path('signup/', views.signup, name='signup'),
+    path('', views.login_view, name='login'),
+    path('signup/', views.signup, name='signup'),  # ⬅️ VERIFICA QUE ESTA LÍNEA EXISTA
     path('logout/', views.logout_view, name='logout'),
     path('home/', views.home, name='home'),
-    path('empresa/editar/<int:id>/', views.editar_empresa, name='editar_empresa'),
-    path('empresa/eliminar/<int:id>/', views.eliminar_empresa, name='eliminar_empresa'),
-    path('', RedirectView.as_view(pattern_name='login', permanent=False)),
-    
+    path('editar/<int:id>/', views.editar_empresa, name='editar_empresa'),
+    path('eliminar/<int:id>/', views.eliminar_empresa, name='eliminar_empresa'),
 ]
 
 if settings.DEBUG:
