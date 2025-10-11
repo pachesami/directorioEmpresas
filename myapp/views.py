@@ -65,15 +65,32 @@ def home(request):
     
     # Buscar empresas
     q = request.GET.get('q', '').strip()
+    search_field = request.GET.get('field', 'all')  # Campo de búsqueda
+    
     empresas_qs = Empresa.objects.all()
     
     if q:
-        empresas_qs = empresas_qs.filter(
-            Q(compania__icontains=q) | Q(cliente__icontains=q) | Q(codigo__icontains=q) |
-            Q(correo__icontains=q)   | Q(pais__icontains=q)    | Q(telefono__icontains=q)
-        )
+        # Búsqueda según el campo seleccionado
+        if search_field == 'compania':
+            empresas_qs = empresas_qs.filter(compania__icontains=q)
+        elif search_field == 'cliente':
+            empresas_qs = empresas_qs.filter(cliente__icontains=q)
+        elif search_field == 'codigo':
+            empresas_qs = empresas_qs.filter(codigo__icontains=q)
+        elif search_field == 'correo':
+            empresas_qs = empresas_qs.filter(correo__icontains=q)
+        elif search_field == 'telefono':
+            empresas_qs = empresas_qs.filter(telefono__icontains=q)
+        elif search_field == 'pais':
+            empresas_qs = empresas_qs.filter(pais__icontains=q)
+        else:
+            # Búsqueda en todos los campos (por defecto)
+            empresas_qs = empresas_qs.filter(
+                Q(compania__icontains=q) | Q(cliente__icontains=q) | Q(codigo__icontains=q) |
+                Q(correo__icontains=q)   | Q(pais__icontains=q)    | Q(telefono__icontains=q)
+            )
     
-    empresas_qs = empresas_qs.order_by('id')
+    empresas_qs = empresas_qs.order_by('-id')
     
     # Paginación
     paginator = Paginator(empresas_qs, 12)
@@ -86,6 +103,7 @@ def home(request):
     return render(request, 'home.html', {
         'empresas': empresas,
         'q': q,
+        'search_field': search_field,
         'is_admin': is_admin
     })
 

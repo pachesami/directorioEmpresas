@@ -1,0 +1,27 @@
+# --- Entorno virtual ---
+/venv/
+
+# --- Archivos temporales y compilados ---
+__pycache__/
+*.pyc
+*.log
+
+# --- Base de datos local ---
+db.sqlite3
+
+# --- Archivos estáticos y de medios ---
+/media/
+/extracted_logos/
+/static/
+
+# --- Archivos del entorno o configuraciones ---
+.env
+*.bak
+*.tmp
+
+# --- Archivos de backup o exportaciones ---
+backup.json
+
+# --- Configuraciones del editor ---
+.vscode/
+.idea/
